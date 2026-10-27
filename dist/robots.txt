@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://omnicorp-security-id.vercel.app/sitemap.xml

@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-primary: #091e3a;
+    --brand-dark: #070b14;
+    --brand-accent: #dc2626;
+    --card-light: #f8fafc;
+  }
+}
+
+/* Custom Typography helpers */
+.font-orbitron {
+  font-family: 'Orbitron', 'Eurostile', -apple-system, sans-serif;
+}
+
+.font-chakra {
+  font-family: 'Chakra Petch', 'Rajdhani', sans-serif;
+}
+
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.font-tech {
+  font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
+}
+
+/* 3D Flip Card Styles */
+.perspective-1000 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Subtle holographic shimmer effect */
+@keyframes holo-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hologram-shimmer {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.25) 0%,
+    rgba(0, 255, 255, 0.3) 25%,
+    rgba(255, 255, 0, 0.25) 50%,
+    rgba(0, 255, 128, 0.3) 75%,
+    rgba(255, 0, 128, 0.25) 100%
+  );
+  background-size: 300% 300%;
+  animation: holo-shimmer 6s ease infinite;
+}
+
+/* Diagonal Caution Stripes */
+.hazard-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    #ea580c,
+    #ea580c 7px,
+    #f97316 7px,
+    #f97316 14px
+  );
+}
+
+.hazard-stripes-red {
+  background: repeating-linear-gradient(
+    -45deg,
+    #dc2626,
+    #dc2626 6px,
+    #ef4444 6px,
+    #ef4444 12px
+  );
+}
+
+/* Subtle dot grid for editor studio */
+.studio-grid {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
