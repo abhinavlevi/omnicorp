@@ -3,6 +3,10 @@ import { toPng } from 'html-to-image';
 import { EmployeeBadgeState } from '../types';
 import { VerticalCard } from './VerticalCard';
 import { HorizontalCard } from './HorizontalCard';
+import { HorizontalCardFront } from './HorizontalCardFront';
+import { HorizontalCardBack } from './HorizontalCardBack';
+import { VerticalCardFront } from './VerticalCardFront';
+import { VerticalCardBack } from './VerticalCardBack';
 import { sound } from '../utils/audio';
 import { RotateCw, Download, Sparkles, Check, Layers } from 'lucide-react';
 
@@ -16,7 +20,7 @@ export const BadgePreview: React.FC<BadgePreviewProps> = ({ badge, onToggleHolde
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState<string | null>(null);
 
-  // Hidden unscaled export refs
+  // Pure standalone export refs (NO 3D flip bleeding, NO double layers)
   const frontExportRef = useRef<HTMLDivElement>(null);
   const backExportRef = useRef<HTMLDivElement>(null);
 
@@ -39,19 +43,14 @@ export const BadgePreview: React.FC<BadgePreviewProps> = ({ badge, onToggleHolde
         width,
         height,
         cacheBust: true,
-        style: {
-          transform: 'none',
-          transformOrigin: 'top left',
-          margin: '0',
-          position: 'static',
-        },
+        backgroundColor: '#ffffff',
       };
 
       if (side === 'front' || side === 'both') {
         if (frontExportRef.current) {
           const dataUrl = await toPng(frontExportRef.current, exportOptions);
           const link = document.createElement('a');
-          const cleanName = badge.name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+          const cleanName = (badge.name || 'badge').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
           link.download = `omnicorp_id_${cleanName}_front.png`;
           link.href = dataUrl;
           link.click();
@@ -62,7 +61,7 @@ export const BadgePreview: React.FC<BadgePreviewProps> = ({ badge, onToggleHolde
         if (backExportRef.current) {
           const dataUrl = await toPng(backExportRef.current, exportOptions);
           const link = document.createElement('a');
-          const cleanName = badge.name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+          const cleanName = (badge.name || 'badge').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
           link.download = `omnicorp_id_${cleanName}_back.png`;
           link.href = dataUrl;
           link.click();
@@ -184,30 +183,34 @@ export const BadgePreview: React.FC<BadgePreviewProps> = ({ badge, onToggleHolde
         </div>
       </div>
 
-      {/* Off-screen pure 1:1 unscaled nodes for crisp 3x export */}
+      {/* ==============================================================
+          OFF-SCREEN PURE 1:1 STANDALONE EXPORT NODES
+          Notice: Each export node contains ONLY its respective face.
+          Zero 3D transform, zero backface bleeding, zero mirrored text!
+          ============================================================== */}
       <div
         style={{
           position: 'fixed',
-          top: '-9999px',
-          left: '-9999px',
-          opacity: 0,
+          top: 0,
+          left: 0,
+          zIndex: -9999,
           pointerEvents: 'none',
-          zIndex: -1,
+          opacity: 0,
         }}
         aria-hidden="true"
       >
         <div ref={frontExportRef}>
           {isVertical ? (
-            <VerticalCard badge={badge} isFlipped={false} withHolder={false} />
+            <VerticalCardFront badge={badge} />
           ) : (
-            <HorizontalCard badge={badge} isFlipped={false} withHolder={false} />
+            <HorizontalCardFront badge={badge} />
           )}
         </div>
         <div ref={backExportRef}>
           {isVertical ? (
-            <VerticalCard badge={badge} isFlipped={true} withHolder={false} />
+            <VerticalCardBack badge={badge} />
           ) : (
-            <HorizontalCard badge={badge} isFlipped={true} withHolder={false} />
+            <HorizontalCardBack badge={badge} />
           )}
         </div>
       </div>
