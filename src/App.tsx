@@ -17,7 +17,6 @@ export function App() {
     return DEFAULT_BADGE_STATE;
   });
 
-  // Keep URL updated or provide share handler
   const handleShare = useCallback(async (): Promise<boolean> => {
     try {
       const shareUrl = serializeStateToUrl(badge);
@@ -45,21 +44,27 @@ export function App() {
     }));
   };
 
-  // Sync title with employee name
+  const handleToggleHolder = () => {
+    setBadge((prev) => ({
+      ...prev,
+      showHolderCase: !prev.showHolderCase,
+    }));
+  };
+
   useEffect(() => {
     document.title = `${badge.name} | OmniCorp Security ID Generator`;
   }, [badge.name]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#070b14] text-slate-100 selection:bg-rose-500 selection:text-white">
-      {/* Global Application Header */}
+    <div className="min-h-screen flex flex-col bg-slate-100 text-slate-800 selection:bg-rose-500 selection:text-white">
+      {/* Light Theme Header */}
       <Header onShare={handleShare} />
 
-      {/* Main Studio Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Form Editor Controls (7 cols) */}
-          <div className="lg:col-span-7 space-y-6">
+      {/* Main Single Page Studio */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left: Quick Fun Customization Controls (6 cols) */}
+          <div className="lg:col-span-6 space-y-4">
             <EmployeeEditor
               badge={badge}
               onChange={handleBadgeChange}
@@ -67,17 +72,20 @@ export function App() {
             />
           </div>
 
-          {/* Right Column: Interactive 3D Badge Preview & Print Engine (5 cols) */}
-          <div className="lg:col-span-5 lg:sticky lg:top-24">
-            <BadgePreview badge={badge} />
+          {/* Right: Live Badge Replica & Export Engine (6 cols) */}
+          <div className="lg:col-span-6 lg:sticky lg:top-20">
+            <BadgePreview
+              badge={badge}
+              onToggleHolder={handleToggleHolder}
+            />
           </div>
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Simple Clean Footer */}
       <Footer />
 
-      {/* Vercel Analytics */}
+      {/* Analytics */}
       <Analytics />
     </div>
   );

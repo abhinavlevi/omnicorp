@@ -1,4 +1,4 @@
-export type CardLayout = 'vertical' | 'horizontal';
+export type CardLayout = 'horizontal' | 'vertical';
 
 export interface EmployeeBadgeState {
   cardLayout: CardLayout;
@@ -17,6 +17,7 @@ export interface EmployeeBadgeState {
   photoPanY: number; // -40% to 40%
   showLanyardSlot: boolean;
   showHologram: boolean;
+  showHolderCase: boolean;
   facilityName: string;
   returnAddress: string;
 }

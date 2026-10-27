@@ -70,14 +70,24 @@
   animation: holo-shimmer 6s ease infinite;
 }
 
-/* Diagonal Caution Stripes */
+/* Exact Diagonal Caution Stripes matching the RoboCop prop */
 .hazard-stripes {
   background: repeating-linear-gradient(
     -45deg,
-    #ea580c,
+    #e11d48,
+    #e11d48 7px,
     #ea580c 7px,
-    #f97316 7px,
-    #f97316 14px
+    #ea580c 14px
+  );
+}
+
+.prop-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    #d82613,
+    #d82613 6px,
+    #f26522 6px,
+    #f26522 12px
   );
 }
 

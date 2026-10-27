@@ -5,12 +5,12 @@ import { sound } from '../utils/audio';
 import {
   Upload,
   RotateCcw,
-  Shield,
-  CreditCard,
   User,
   Sliders,
   CheckCircle2,
   Lock,
+  Layers,
+  Edit3,
 } from 'lucide-react';
 
 interface EmployeeEditorProps {
@@ -72,71 +72,18 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-6 text-slate-100">
-      {/* ================= 1. CARD LAYOUT SELECTOR ================= */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 shadow-sm">
-        <label className="flex items-center gap-2 font-chakra font-bold text-xs uppercase tracking-wider text-slate-300 mb-3">
-          <CreditCard className="w-4 h-4 text-rose-500" />
-          <span>Card Specification (Select Layout)</span>
-        </label>
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={() => handleLayoutSelect('horizontal')}
-            className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
-              badge.cardLayout === 'horizontal'
-                ? 'bg-rose-950/40 border-rose-500 ring-1 ring-rose-500 shadow-md'
-                : 'bg-slate-800/60 border-slate-700/80 hover:bg-slate-800'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-chakra font-bold text-sm text-slate-100">
-                Horizontal Facility Keycard
-              </span>
-              {badge.cardLayout === 'horizontal' && (
-                <CheckCircle2 className="w-4 h-4 text-rose-500 shrink-0" />
-              )}
-            </div>
-            <div className="text-[11px] font-tech text-slate-400 mt-1">
-              500 × 315 px • Medical & Lab Access Standard
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleLayoutSelect('vertical')}
-            className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
-              badge.cardLayout === 'vertical'
-                ? 'bg-rose-950/40 border-rose-500 ring-1 ring-rose-500 shadow-md'
-                : 'bg-slate-800/60 border-slate-700/80 hover:bg-slate-800'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-chakra font-bold text-sm text-slate-100">
-                Vertical Staff Credential
-              </span>
-              {badge.cardLayout === 'vertical' && (
-                <CheckCircle2 className="w-4 h-4 text-rose-500 shrink-0" />
-              )}
-            </div>
-            <div className="text-[11px] font-tech text-slate-400 mt-1">
-              320 × 490 px • CR-80 Lanyard Pass Standard
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* ================= 2. CURATED EMPLOYEE PRESETS (EXACTLY 3) ================= */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 shadow-sm">
-        <div className="flex items-center justify-between mb-3">
-          <label className="flex items-center gap-2 font-chakra font-bold text-xs uppercase tracking-wider text-slate-300">
-            <User className="w-4 h-4 text-rose-500" />
-            <span>Curated Employee Presets (3 Profiles)</span>
+    <div className="flex flex-col gap-4 text-slate-800">
+      {/* 1. CHOOSE A CHARACTER PRESET */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs">
+        <div className="flex items-center justify-between mb-2.5">
+          <label className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider text-slate-700">
+            <User className="w-4 h-4 text-rose-600" />
+            <span>1. Choose Character (Presets)</span>
           </label>
-          <span className="text-[11px] font-tech text-slate-400">Select to load authentic records</span>
+          <span className="text-xs text-slate-500">Click to load</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2.5">
           {EMPLOYEE_PRESETS.map((preset) => {
             const isSelected = badge.cardNo === preset.cardNo;
             return (
@@ -144,32 +91,28 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
                 key={preset.id}
                 type="button"
                 onClick={() => handlePresetSelect(preset.id)}
-                className={`p-2.5 rounded-lg border flex flex-col items-center text-center transition-all cursor-pointer ${
+                className={`p-2 rounded-lg border flex flex-col items-center text-center transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-rose-950/50 border-rose-500 ring-1 ring-rose-500 shadow-lg'
-                    : 'bg-slate-800/60 border-slate-700/80 hover:bg-slate-800'
+                    ? 'bg-rose-50 border-rose-500 ring-2 ring-rose-400 shadow-sm'
+                    : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
                 }`}
               >
-                {/* Character Thumbnail */}
-                <div className="w-14 h-16 rounded overflow-hidden border border-slate-600 bg-slate-900 mb-2 relative">
+                <div className="w-12 h-14 rounded overflow-hidden border border-slate-300 bg-slate-200 mb-1.5 relative">
                   <img
                     src={preset.avatarThumb}
                     alt={preset.displayName}
                     className="w-full h-full object-cover"
                   />
-                  <span className="absolute bottom-0 right-0 bg-rose-600 text-[9px] font-bold px-1 text-white leading-none py-0.5">
+                  <span className="absolute bottom-0 right-0 bg-rose-600 text-[9px] font-black px-1 text-white leading-none py-0.5">
                     {preset.clearanceClass}
                   </span>
                 </div>
 
-                <div className="font-chakra font-bold text-xs text-slate-100 truncate w-full">
+                <div className="font-bold text-xs text-slate-900 truncate w-full">
                   {preset.displayName}
                 </div>
-                <div className="font-tech text-[10px] text-rose-400 uppercase truncate w-full mt-0.5">
+                <div className="text-[10px] text-slate-500 truncate w-full mt-0.5">
                   {preset.role}
-                </div>
-                <div className="font-tech text-[9px] text-slate-400 mt-1">
-                  {preset.cardNo}
                 </div>
               </button>
             );
@@ -177,26 +120,71 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
         </div>
       </div>
 
-      {/* ================= 3. PHOTO UPLOAD & INTERACTIVE FRAMING ================= */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 shadow-sm">
+      {/* 2. CARD LAYOUT */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs">
+        <label className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider text-slate-700 mb-2.5">
+          <Layers className="w-4 h-4 text-rose-600" />
+          <span>2. Card Orientation</span>
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => handleLayoutSelect('horizontal')}
+            className={`p-3 rounded-lg border text-left flex items-center justify-between transition-all cursor-pointer ${
+              badge.cardLayout === 'horizontal'
+                ? 'bg-rose-50 border-rose-500 ring-1 ring-rose-400 font-bold text-rose-900'
+                : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'
+            }`}
+          >
+            <div>
+              <div className="text-sm font-bold">Horizontal Badge</div>
+              <div className="text-[11px] text-slate-500">Classic Movie Prop Replica</div>
+            </div>
+            {badge.cardLayout === 'horizontal' && (
+              <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0" />
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleLayoutSelect('vertical')}
+            className={`p-3 rounded-lg border text-left flex items-center justify-between transition-all cursor-pointer ${
+              badge.cardLayout === 'vertical'
+                ? 'bg-rose-50 border-rose-500 ring-1 ring-rose-400 font-bold text-rose-900'
+                : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'
+            }`}
+          >
+            <div>
+              <div className="text-sm font-bold">Vertical Badge</div>
+              <div className="text-[11px] text-slate-500">Lanyard Pass Format</div>
+            </div>
+            {badge.cardLayout === 'vertical' && (
+              <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* 3. PHOTO UPLOAD & POSITIONING */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs">
         <div className="flex items-center justify-between mb-3">
-          <label className="flex items-center gap-2 font-chakra font-bold text-xs uppercase tracking-wider text-slate-300">
-            <Sliders className="w-4 h-4 text-rose-500" />
-            <span>Portrait Upload &amp; Precision Framing</span>
+          <label className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider text-slate-700">
+            <Sliders className="w-4 h-4 text-rose-600" />
+            <span>3. Upload &amp; Position Photo</span>
           </label>
 
           <button
             type="button"
             onClick={onResetPhoto}
-            className="flex items-center gap-1 text-[11px] font-tech text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+            className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
-            <span>Reset Framing</span>
+            <span>Reset Photo</span>
           </button>
         </div>
 
-        {/* Upload Trigger Button & Privacy Notice */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-4">
+        {/* Upload Button */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 mb-3">
           <input
             type="file"
             ref={fileInputRef}
@@ -207,25 +195,25 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 border border-slate-600 text-xs font-chakra font-bold text-slate-200 transition-all cursor-pointer shadow-xs"
+            className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-slate-900 hover:bg-black text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
           >
-            <Upload className="w-4 h-4 text-rose-500" />
-            <span>Upload Custom Photo</span>
+            <Upload className="w-4 h-4" />
+            <span>Upload Your Photo</span>
           </button>
 
-          {/* Privacy Guarantee (Mandatory text) */}
-          <div className="flex items-center gap-2 text-[11px] font-tech text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 px-3 py-2 rounded-lg flex-1">
-            <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          {/* Privacy Guarantee */}
+          <div className="flex items-center gap-1.5 text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg flex-1">
+            <Lock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             <span>Privacy: Your photo stays in this browser and is never uploaded.</span>
           </div>
         </div>
 
-        {/* Framing Controls: Zoom & Pan */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
+        {/* Sliders */}
+        <div className="grid grid-cols-3 gap-3 pt-2 border-t border-slate-100">
           <div>
-            <div className="flex justify-between text-[11px] font-tech text-slate-300 mb-1">
-              <span>Zoom Scale</span>
-              <span className="text-rose-400 font-bold">{badge.photoZoom.toFixed(2)}×</span>
+            <div className="flex justify-between text-xs text-slate-600 mb-1">
+              <span>Zoom</span>
+              <span className="font-bold text-rose-600">{badge.photoZoom.toFixed(1)}×</span>
             </div>
             <input
               type="range"
@@ -239,9 +227,9 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
           </div>
 
           <div>
-            <div className="flex justify-between text-[11px] font-tech text-slate-300 mb-1">
-              <span>Pan Horizontal (X)</span>
-              <span className="text-rose-400 font-bold">{badge.photoPanX > 0 ? `+${badge.photoPanX}%` : `${badge.photoPanX}%`}</span>
+            <div className="flex justify-between text-xs text-slate-600 mb-1">
+              <span>Move X</span>
+              <span className="font-bold text-rose-600">{badge.photoPanX}%</span>
             </div>
             <input
               type="range"
@@ -255,9 +243,9 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
           </div>
 
           <div>
-            <div className="flex justify-between text-[11px] font-tech text-slate-300 mb-1">
-              <span>Pan Vertical (Y)</span>
-              <span className="text-rose-400 font-bold">{badge.photoPanY > 0 ? `+${badge.photoPanY}%` : `${badge.photoPanY}%`}</span>
+            <div className="flex justify-between text-xs text-slate-600 mb-1">
+              <span>Move Y</span>
+              <span className="font-bold text-rose-600">{badge.photoPanY}%</span>
             </div>
             <input
               type="range"
@@ -272,137 +260,92 @@ export const EmployeeEditor: React.FC<EmployeeEditorProps> = ({
         </div>
       </div>
 
-      {/* ================= 4. BADGE FIELDS FORM ================= */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 shadow-sm">
-        <label className="flex items-center gap-2 font-chakra font-bold text-xs uppercase tracking-wider text-slate-300 mb-4">
-          <Shield className="w-4 h-4 text-rose-500" />
-          <span>Credential Data &amp; Security Specifications</span>
+      {/* 4. CUSTOMIZE BADGE DETAILS (NO JARGON) */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs">
+        <label className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider text-slate-700 mb-3">
+          <Edit3 className="w-4 h-4 text-rose-600" />
+          <span>4. Edit Badge Information</span>
         </label>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Employee Name */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
-              Employee Name (Surname, Initial)
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
+              Full Name
             </label>
             <input
               type="text"
               value={badge.name}
               onChange={(e) => onChange({ name: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-chakra text-slate-100 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 font-semibold focus:outline-none focus:border-rose-500 focus:bg-white"
               placeholder="e.g. Cheng, W."
             />
           </div>
 
-          {/* Department / Division */}
           <div>
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
               Department / Division
             </label>
             <input
               type="text"
               value={badge.department}
               onChange={(e) => onChange({ department: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-chakra text-slate-100 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 font-semibold focus:outline-none focus:border-rose-500 focus:bg-white"
               placeholder="e.g. R/D Med Level 42"
             />
           </div>
 
-          {/* Clearance Level */}
           <div>
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
               Clearance Level
             </label>
             <input
               type="text"
               value={badge.clearanceLevel}
               onChange={(e) => onChange({ clearanceLevel: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-chakra text-slate-100 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 font-semibold focus:outline-none focus:border-rose-500 focus:bg-white"
               placeholder="e.g. Restricted 3"
             />
           </div>
 
-          {/* Clearance Classification Letter */}
           <div>
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
-              Clearance Letter (Class)
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
+              Clearance Letter (Red Letter)
             </label>
             <input
               type="text"
               maxLength={2}
               value={badge.clearanceClass}
               onChange={(e) => onChange({ clearanceClass: e.target.value.toUpperCase() })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-orbitron font-bold text-rose-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-black text-rose-600 focus:outline-none focus:border-rose-500 focus:bg-white"
               placeholder="A"
             />
           </div>
 
-          {/* Card Number */}
           <div>
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
-              Card / Badge Number
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
+              Card Number
             </label>
             <input
               type="text"
               value={badge.cardNo}
               onChange={(e) => onChange({ cardNo: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-tech text-slate-100 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-mono text-slate-900 font-semibold focus:outline-none focus:border-rose-500 focus:bg-white"
               placeholder="000-926384-2387"
             />
           </div>
 
-          {/* Security Code */}
           <div>
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
-              Internal Security String
+            <label className="block text-xs font-semibold text-slate-600 mb-1">
+              Side Code (Right Edge)
             </label>
             <input
               type="text"
               value={badge.securityCode}
               onChange={(e) => onChange({ securityCode: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-tech text-slate-100 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
-              placeholder="090-MED-42-A"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-mono text-slate-900 font-semibold focus:outline-none focus:border-rose-500 focus:bg-white"
+              placeholder="090"
             />
           </div>
-
-          {/* Return Address / Facility */}
-          <div className="sm:col-span-2">
-            <label className="block text-[11px] font-tech uppercase text-slate-400 mb-1">
-              Return Routing Notice (Card Back)
-            </label>
-            <input
-              type="text"
-              value={badge.returnAddress}
-              onChange={(e) => onChange({ returnAddress: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-800/90 border border-slate-700 rounded-lg text-sm font-tech text-slate-200 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
-              placeholder="OMNICORP SECURITY DIVISION, OMNI TOWER, DETROIT MI"
-            />
-          </div>
-        </div>
-
-        {/* Optional Security Features Checkboxes */}
-        <div className="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-slate-800 text-xs font-chakra">
-          <label className="flex items-center gap-2 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={badge.showHologram}
-              onChange={(e) => onChange({ showHologram: e.target.checked })}
-              className="rounded accent-rose-600 w-4 h-4"
-            />
-            <span>Holographic Security Foil</span>
-          </label>
-
-          {badge.cardLayout === 'vertical' && (
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={badge.showLanyardSlot}
-                onChange={(e) => onChange({ showLanyardSlot: e.target.checked })}
-                className="rounded accent-rose-600 w-4 h-4"
-              />
-              <span>Punched Lanyard Slot</span>
-            </label>
-          )}
         </div>
       </div>
     </div>
